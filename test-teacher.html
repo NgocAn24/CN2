@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Teacher Class Test</title>
+</head>
+
+<body>
+    <h2>Teacher Class Tests</h2>
+    <div id="results"></div>
+
+    <!-- Load dependencies in correct order -->
+    <script src="js/utils/storage.js"></script>
+    <script src="js/models/class.js"></script>
+    <script src="js/models/teacher.js"></script>
+
+    <script>
+        function log(message) {
+            const results = document.getElementById('results');
+            results.innerHTML += `<p>${message}</p>`;
+            console.log(message);
+        }
+
+        function debugStorage(key) {
+            const data = localStorage.getItem(key);
+            log(`Storage ${key}: ${data}`);
+        }
+
+        // Clear any existing data
+        localStorage.clear();
+        log('localStorage cleared');
+
+        try {
+            // Test 1: Create new teacher
+            log('Test 1: Creating new teacher');
+            const teacher = new Teacher('T001', 'Test Teacher', 'test@test.com', '1234567890');
+            log(`New teacher: ${JSON.stringify(teacher, null, 2)}`);
+            log(`assignedClasses is array: ${Array.isArray(teacher.assignedClasses)}`);
+            log(`assignedClasses length: ${teacher.assignedClasses.length}`);
+
+            // Test 2: Save and retrieve teacher
+            log('\nTest 2: Save and retrieve teacher');
+            const addResult = Teacher.add(teacher);
+            log(`Add result: ${addResult}`);
+            debugStorage(STORAGE_KEYS.TEACHERS);
+
+            const retrieved = Teacher.getById(teacher.id);
+            log(`Retrieved teacher: ${JSON.stringify(retrieved, null, 2)}`);
+            if (retrieved) {
+                log(`Retrieved assignedClasses is array: ${Array.isArray(retrieved.assignedClasses)}`);
+            }
+
+            // Test 3: Update teacher
+            log('\nTest 3: Update teacher');
+            const updateData = {
+                name: 'Updated Teacher',
+                email: 'updated@test.com'
+            };
+            const updateResult = Teacher.update(teacher.id, updateData);
+            log(`Update result: ${updateResult}`);
+            debugStorage(STORAGE_KEYS.TEACHERS);
+
+            const updated = Teacher.getById(teacher.id);
+            log(`Updated teacher: ${JSON.stringify(updated, null, 2)}`);
+            if (updated) {
+                log(`assignedClasses preserved: ${Array.isArray(updated.assignedClasses)}`);
+            }
+
+            // Test 4: Assign class
+            log('\nTest 4: Assign class');
+            const mockClass = {
+                id: 'class123',
+                code: 'C001',
+                name: 'Test Class'
+            };
+            localStorage.setItem(STORAGE_KEYS.CLASSES, JSON.stringify([mockClass]));
+            debugStorage(STORAGE_KEYS.CLASSES);
+
+            const assignResult = Teacher.assignClass(teacher.id, 'class123');
+            log(`Assign result: ${assignResult}`);
+            debugStorage(STORAGE_KEYS.TEACHERS);
+
+            const withClass = Teacher.getById(teacher.id);
+            log(`Teacher with assigned class: ${JSON.stringify(withClass, null, 2)}`);
+            if (withClass) {
+                log(`assignedClasses: ${JSON.stringify(withClass.assignedClasses)}`);
+            }
+
+        } catch (error) {
+            log(`Error: ${error.message}`);
+            console.error(error);
+        }
+    </script>
+</body>
+
+</html>

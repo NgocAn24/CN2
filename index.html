@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Lớp Học</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/notifications.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <h1 class="logo">Quản Lý Lớp Học</h1>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#" data-page="course-modules" class="nav-link active">
+                            <i class="fas fa-book"></i> Học phần
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="semesters" class="nav-link">
+                            <i class="fas fa-calendar-alt"></i> Kì học
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="classes" class="nav-link">
+                            <i class="fas fa-chalkboard"></i> Lớp học
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="teachers" class="nav-link">
+                            <i class="fas fa-chalkboard-teacher"></i> Phân công giảng viên
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="statistics" class="nav-link">
+                            <i class="fas fa-chart-bar"></i> Thống kê
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Content pages will be loaded here -->
+            <div id="course-modules" class="page active">
+                <h2>Quản lý học phần</h2>
+                <div class="actions">
+                    <button class="btn-add" onclick="showAddCourseModule()">
+                        <i class="fas fa-plus"></i> Thêm học phần
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="courseModulesTable">
+                        <thead>
+                            <tr>
+                                <th>Mã số</th>
+                                <th>Tên học phần</th>
+                                <th>Số tín chỉ</th>
+                                <th>Hệ số</th>
+                                <th>Số tiết</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Course modules will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="semesters" class="page">
+                <h2>Quản lý kì học</h2>
+                <div class="actions">
+                    <button class="btn-add" onclick="showAddSemester()">
+                        <i class="fas fa-plus"></i> Thêm kì học
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="semestersTable">
+                        <thead>
+                            <tr>
+                                <th>Tên kì học</th>
+                                <th>Năm học</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Semesters will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="classes" class="page">
+                <h2>Quản lý lớp học</h2>
+                <div class="actions">
+                    <button class="btn-add" onclick="showAddClass()">
+                        <i class="fas fa-plus"></i> Thêm lớp học
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="classesTable">
+                        <thead>
+                            <tr>
+                                <th>Mã lớp</th>
+                                <th>Tên lớp</th>
+                                <th>Kì học</th>
+                                <th>Học phần</th>
+                                <th>Số sinh viên</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Classes will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="teachers" class="page">
+                <h2>Quản lý giảng viên</h2>
+                <div class="actions">
+                    <button class="btn-add" onclick="showAddTeacher()">
+                        <i class="fas fa-plus"></i> Thêm giảng viên
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="teachersTable">
+                        <thead>
+                            <tr>
+                                <th>Mã giảng viên</th>
+                                <th>Tên giảng viên</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Số lớp phụ trách</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Teachers will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="statistics" class="page">
+                <h2>Thống kê</h2>
+                <div class="statistics-filters">
+                    <div class="form-group">
+                        <label for="yearSelect">Năm học:</label>
+                        <select id="yearSelect">
+                            <option value="">Tất cả năm học</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="summaryCards" class="summary-cards">
+                    <!-- Summary cards will be loaded here -->
+                </div>
+
+                <div class="table-container">
+                    <table id="statsTable">
+                        <thead>
+                            <tr>
+                                <th>Mã học phần</th>
+                                <th>Tên học phần</th>
+                                <th>Tổng số lớp</th>
+                                <th>Tổng số SV</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Statistics will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for adding/editing course modules -->
+    <div id="courseModuleModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="courseModuleModalTitle">Thêm học phần</h2>
+            <form id="courseModuleForm">
+                <div class="form-group">
+                    <label for="code">Mã số:</label>
+                    <input type="text" id="code" name="code" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Tên học phần:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="credits">Số tín chỉ:</label>
+                    <input type="number" id="credits" name="credits" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="coefficient">Hệ số:</label>
+                    <input type="number" id="coefficient" name="coefficient" required step="0.1" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="periods">Số tiết:</label>
+                    <input type="number" id="periods" name="periods" required min="1">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">Lưu</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for adding/editing semesters -->
+    <div id="semesterModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="semesterModalTitle">Thêm kì học</h2>
+            <form id="semesterForm">
+                <div class="form-group">
+                    <label for="name">Tên kì học:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="academicYear">Năm học:</label>
+                    <input type="text" id="academicYear" name="academicYear" required placeholder="VD: 2023-2024">
+                </div>
+                <div class="form-group">
+                    <label for="startDate">Ngày bắt đầu:</label>
+                    <input type="date" id="startDate" name="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="endDate">Ngày kết thúc:</label>
+                    <input type="date" id="endDate" name="endDate" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">Lưu</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for adding/editing classes -->
+    <div id="classModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="classModalTitle">Thêm lớp học</h2>
+            <form id="classForm">
+                <div class="form-group">
+                    <label for="semesterSelect">Kì học:</label>
+                    <select id="semesterSelect" name="semesterId" required>
+                        <option value="">Chọn kì học</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="courseModuleSelect">Học phần:</label>
+                    <select id="courseModuleSelect" name="courseModuleId" required>
+                        <option value="">Chọn học phần</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="code">Mã lớp:</label>
+                    <input type="text" id="code" name="code" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Tên lớp:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="studentCount">Số sinh viên:</label>
+                    <input type="number" id="studentCount" name="studentCount" required min="1">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">Lưu</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for adding/editing teachers -->
+    <div id="teacherModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="teacherModalTitle">Thêm giảng viên</h2>
+            <form id="teacherForm">
+                <div class="form-group">
+                    <label for="code">Mã giảng viên:</label>
+                    <input type="text" id="code" name="code" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Tên giảng viên:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Số điện thoại:</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">Lưu</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for class assignments -->
+    <div id="assignmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Phân công lớp học</h2>
+            <h3>Giảng viên: <span id="assignmentTeacherName"></span></h3>
+
+            <form id="assignmentForm">
+                <div class="form-group">
+                    <label for="classSelect">Chọn lớp học:</label>
+                    <select id="classSelect" name="classId" required>
+                        <option value="">Chọn lớp học</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">Phân công</button>
+                </div>
+            </form>
+
+            <div class="assigned-classes">
+                <h4>Các lớp đã phân công:</h4>
+                <div id="assignedClassesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <script type="module" src="js/main.js"></script>
+
+    <!-- Make dashboard globally available -->
+    <script>
+        window.showNotification = function(message, type = 'success') {
+            if (window.dashboard) {
+                window.dashboard.showNotification(message, type);
+            }
+        }
+    </script>
+</body>
+
+</html>
