@@ -3,7 +3,10 @@ export const STORAGE_KEYS = {
     COURSE_MODULES: 'courseModules',
     SEMESTERS: 'semesters',
     CLASSES: 'classes',
-    TEACHERS: 'teachers'
+    TEACHERS: 'teachers',
+    RATE_PER_LESSON: 'ratePerLesson',
+    TEACHER_COEFFICIENTS: 'teacherCoefficients',
+    CLASS_COEFFICIENTS: 'classCoefficients'
 };
 
 // Initialize storage with empty arrays if not exists

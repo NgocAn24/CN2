@@ -1,0 +1,160 @@
+/* Teaching Salary Styles */
+
+.teaching-salary-container {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.function-list {
+    flex: 0 0 250px;
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.function-list h2 {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #ddd;
+}
+
+.function-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.function-list .func-link {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s;
+}
+
+.function-list .func-link:hover {
+    background: #e9ecef;
+}
+
+.function-list .func-link.active {
+    background: #007bff;
+    color: white;
+}
+
+.function-interface {
+    flex: 1;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Forms */
+
+.rate-form,
+.coefficient-form,
+.calculate-form {
+    max-width: 600px;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+
+/* Tables */
+
+.table-container {
+    overflow-x: auto;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.table-container th,
+.table-container td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.table-container th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+
+/* Salary Results */
+
+.salary-result {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.salary-details table {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.salary-details .total-row {
+    background: #e9ecef;
+}
+
+.salary-details .total-row td {
+    font-weight: 600;
+}
+
+
+/* Buttons */
+
+.btn-save,
+.btn-calculate {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-save:hover,
+.btn-calculate:hover {
+    background: #0056b3;
+}
+
+.btn-delete {
+    padding: 0.25rem 0.5rem;
+    border: none;
+    border-radius: 4px;
+    background: #dc3545;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background: #c82333;
+}

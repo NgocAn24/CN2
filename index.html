@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/notifications.css">
+    <link rel="stylesheet" href="styles/teaching-salary.css">
 </head>
 
 <body>
@@ -43,6 +44,11 @@
                     <li>
                         <a href="#" data-page="statistics" class="nav-link">
                             <i class="fas fa-chart-bar"></i> Thống kê
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="teaching-salary" class="nav-link">
+                            <i class="fas fa-dollar-sign"></i> Tính tiền dạy
                         </a>
                     </li>
                 </ul>
@@ -184,6 +190,23 @@
                             <!-- Statistics will be loaded here -->
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div id="teaching-salary" class="page">
+                <div class="teaching-salary-container">
+                    <div class="function-list">
+                        <h2>Chức năng</h2>
+                        <ul>
+                            <li><a href="#" data-func="rate-per-lesson" class="func-link active">Định mức tiền theo tiết</a></li>
+                            <li><a href="#" data-func="teacher-coefficients" class="func-link">Hệ số giáo viên</a></li>
+                            <li><a href="#" data-func="class-coefficients" class="func-link">Hệ số lớp</a></li>
+                            <li><a href="#" data-func="calculate-salary" class="func-link">Tính tiền dạy</a></li>
+                        </ul>
+                    </div>
+                    <div class="function-interface">
+                        <!-- Function interfaces will be loaded here -->
+                    </div>
                 </div>
             </div>
         </main>

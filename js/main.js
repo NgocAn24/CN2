@@ -4,6 +4,7 @@ import { SemesterManager } from './modules/semesters.js';
 import { ClassManager } from './modules/classes.js';
 import { TeacherManager } from './modules/teachers.js';
 import { StatisticsManager } from './modules/statistics.js';
+import { TeachingSalaryManager } from './modules/teachingSalary.js';
 
 // Import utilities
 // import { initStorage } from './utils/storage.js';
@@ -17,7 +18,8 @@ class Dashboard {
             'semesters': new SemesterManager(),
             'classes': new ClassManager(),
             'teachers': new TeacherManager(),
-            'statistics': new StatisticsManager()
+            'statistics': new StatisticsManager(),
+            'teaching-salary': new TeachingSalaryManager()
         };
 
         this.init();
@@ -42,12 +44,22 @@ class Dashboard {
             COURSE_MODULES: 'courseModules',
             SEMESTERS: 'semesters',
             CLASSES: 'classes',
-            TEACHERS: 'teachers'
+            TEACHERS: 'teachers',
+            RATE_PER_LESSON: 'ratePerLesson',
+            TEACHER_COEFFICIENTS: 'teacherCoefficients',
+            CLASS_COEFFICIENTS: 'classCoefficients'
         };
 
         Object.values(STORAGE_KEYS).forEach(key => {
             if (!localStorage.getItem(key)) {
-                localStorage.setItem(key, JSON.stringify([]));
+                // Initialize arrays for collection types
+                if (['courseModules', 'semesters', 'classes', 'teachers', 'teacherCoefficients', 'classCoefficients'].includes(key)) {
+                    localStorage.setItem(key, JSON.stringify([]));
+                }
+                // Initialize rate per lesson with 0
+                else if (key === 'ratePerLesson') {
+                    localStorage.setItem(key, '0');
+                }
             }
         });
     }
