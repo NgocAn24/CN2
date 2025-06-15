@@ -41,7 +41,244 @@ export class TeachingSalaryManager {
             case 'calculate-salary':
                 this.loadCalculateSalaryInterface(interfaceArea);
                 break;
+            case 'department-report':
+                this.loadDepartmentReportInterface(interfaceArea);
+                break;
+            case 'school-report':
+                this.loadSchoolReportInterface(interfaceArea);
+                break;
         }
+    }
+
+    loadDepartmentReportInterface(container) {
+            const departments = JSON.parse(localStorage.getItem('departments') || '[]');
+            const semesters = JSON.parse(localStorage.getItem('semesters') || '[]');
+
+            container.innerHTML = `
+            <div class="department-report">
+                <h3>Báo cáo tiền dạy theo khoa</h3>
+                <form id="departmentReportForm" class="report-form">
+                    <div class="form-group">
+                        <label for="departmentSelect">Khoa:</label>
+                        <select id="departmentSelect" name="departmentId" required>
+                            <option value="">Chọn khoa</option>
+                            ${departments.map(d => `
+                                <option value="${d.id}">${d.name}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="semesterSelect">Kì học:</label>
+                        <select id="semesterSelect" name="semesterId" required>
+                            <option value="">Chọn kì học</option>
+                            ${semesters.map(s => `
+                                <option value="${s.id}">${s.name} ${s.academicYear}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-calculate">Tạo báo cáo</button>
+                    </div>
+                </form>
+                <div id="departmentReportResult" class="report-result"></div>
+            </div>
+        `;
+
+        const form = container.querySelector('#departmentReportForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.generateDepartmentReport(
+                form.departmentId.value,
+                form.semesterId.value
+            );
+        });
+    }
+
+    loadSchoolReportInterface(container) {
+        const semesters = JSON.parse(localStorage.getItem('semesters') || '[]');
+        
+        container.innerHTML = `
+            <div class="school-report">
+                <h3>Báo cáo tiền dạy toàn trường</h3>
+                <form id="schoolReportForm" class="report-form">
+                    <div class="form-group">
+                        <label for="semesterSelect">Kì học:</label>
+                        <select id="semesterSelect" name="semesterId" required>
+                            <option value="">Chọn kì học</option>
+                            ${semesters.map(s => `
+                                <option value="${s.id}">${s.name} ${s.academicYear}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-calculate">Tạo báo cáo</button>
+                    </div>
+                </form>
+                <div id="schoolReportResult" class="report-result"></div>
+            </div>
+        `;
+
+        const form = container.querySelector('#schoolReportForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.generateSchoolReport(form.semesterId.value);
+        });
+    }
+
+    generateDepartmentReport(departmentId, semesterId) {
+        const teachers = JSON.parse(localStorage.getItem('teachers') || '[]')
+            .filter(t => t.departmentId === departmentId);
+        const departments = JSON.parse(localStorage.getItem('departments') || '[]');
+        const department = departments.find(d => d.id === departmentId);
+        const semester = JSON.parse(localStorage.getItem('semesters') || '[]')
+            .find(s => s.id === semesterId);
+
+        let totalDepartmentSalary = 0;
+        const teacherDetails = [];
+
+        teachers.forEach(teacher => {
+            const classes = JSON.parse(localStorage.getItem('classes') || '[]')
+                .filter(c => c.teacherId === teacher.id && c.semesterId === semesterId);
+            
+            let teacherTotalSalary = 0;
+            const classDetails = [];
+
+            classes.forEach(cls => {
+                const courseModule = JSON.parse(localStorage.getItem('courseModules') || '[]')
+                    .find(cm => cm.id === cls.courseModuleId);
+                
+                if (courseModule) {
+                    const baseSalary = courseModule.periods * parseFloat(localStorage.getItem('ratePerLesson') || '0');
+                    const classCoefficient = this.getClassCoefficient(cls);
+                    const teacherCoefficient = this.getTeacherCoefficient(teacher);
+                    const classSalary = baseSalary * classCoefficient * teacherCoefficient;
+                    
+                    teacherTotalSalary += classSalary;
+                    classDetails.push({
+                        className: cls.name,
+                        periods: courseModule.periods,
+                        salary: classSalary
+                    });
+                }
+            });
+
+            totalDepartmentSalary += teacherTotalSalary;
+            teacherDetails.push({
+                teacher,
+                totalSalary: teacherTotalSalary,
+                classes: classDetails
+            });
+        });
+
+        const resultContainer = document.getElementById('departmentReportResult');
+        resultContainer.innerHTML = `
+            <h4>Báo cáo tiền dạy ${department.name}</h4>
+            <h5>Kì học: ${semester.name} ${semester.academicYear}</h5>
+            <div class="report-details">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã GV</th>
+                            <th>Tên giảng viên</th>
+                            <th>Số lớp</th>
+                            <th>Tổng tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${teacherDetails.map(d => `
+                            <tr>
+                                <td>${d.teacher.code}</td>
+                                <td>${d.teacher.name}</td>
+                                <td>${d.classes.length}</td>
+                                <td>${d.totalSalary.toLocaleString()} VNĐ</td>
+                            </tr>
+                        `).join('')}
+                        <tr class="total-row">
+                            <td colspan="3"><strong>Tổng cộng khoa:</strong></td>
+                            <td><strong>${totalDepartmentSalary.toLocaleString()} VNĐ</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
+
+    generateSchoolReport(semesterId) {
+        const departments = JSON.parse(localStorage.getItem('departments') || '[]');
+        const semester = JSON.parse(localStorage.getItem('semesters') || '[]')
+            .find(s => s.id === semesterId);
+        
+        let totalSchoolSalary = 0;
+        const departmentDetails = [];
+
+        departments.forEach(department => {
+            const teachers = JSON.parse(localStorage.getItem('teachers') || '[]')
+                .filter(t => t.departmentId === department.id);
+            
+            let departmentTotalSalary = 0;
+            let departmentTotalClasses = 0;
+
+            teachers.forEach(teacher => {
+                const classes = JSON.parse(localStorage.getItem('classes') || '[]')
+                    .filter(c => c.teacherId === teacher.id && c.semesterId === semesterId);
+                
+                departmentTotalClasses += classes.length;
+
+                classes.forEach(cls => {
+                    const courseModule = JSON.parse(localStorage.getItem('courseModules') || '[]')
+                        .find(cm => cm.id === cls.courseModuleId);
+                    
+                    if (courseModule) {
+                        const baseSalary = courseModule.periods * parseFloat(localStorage.getItem('ratePerLesson') || '0');
+                        const classCoefficient = this.getClassCoefficient(cls);
+                        const teacherCoefficient = this.getTeacherCoefficient(teacher);
+                        const classSalary = baseSalary * classCoefficient * teacherCoefficient;
+                        
+                        departmentTotalSalary += classSalary;
+                    }
+                });
+            });
+
+            totalSchoolSalary += departmentTotalSalary;
+            departmentDetails.push({
+                department,
+                totalSalary: departmentTotalSalary,
+                teacherCount: teachers.length,
+                classCount: departmentTotalClasses
+            });
+        });
+
+        const resultContainer = document.getElementById('schoolReportResult');
+        resultContainer.innerHTML = `
+            <h4>Báo cáo tiền dạy toàn trường</h4>
+            <h5>Kì học: ${semester.name} ${semester.academicYear}</h5>
+            <div class="report-details">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Khoa</th>
+                            <th>Số giảng viên</th>
+                            <th>Số lớp</th>
+                            <th>Tổng tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${departmentDetails.map(d => `
+                            <tr>
+                                <td>${d.department.name}</td>
+                                <td>${d.teacherCount}</td>
+                                <td>${d.classCount}</td>
+                                <td>${d.totalSalary.toLocaleString()} VNĐ</td>
+                            </tr>
+                        `).join('')}
+                        <tr class="total-row">
+                            <td colspan="3"><strong>Tổng cộng toàn trường:</strong></td>
+                            <td><strong>${totalSchoolSalary.toLocaleString()} VNĐ</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
     }
 
     loadRatePerLessonInterface(container) {

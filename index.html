@@ -202,6 +202,8 @@
                             <li><a href="#" data-func="teacher-coefficients" class="func-link">Hệ số giáo viên</a></li>
                             <li><a href="#" data-func="class-coefficients" class="func-link">Hệ số lớp</a></li>
                             <li><a href="#" data-func="calculate-salary" class="func-link">Tính tiền dạy</a></li>
+                            <li><a href="#" data-func="department-report" class="func-link">Báo cáo theo khoa</a></li>
+                            <li><a href="#" data-func="school-report" class="func-link">Báo cáo toàn trường</a></li>
                         </ul>
                     </div>
                     <div class="function-interface">
@@ -327,6 +329,22 @@
                 <div class="form-group">
                     <label for="name">Tên giảng viên:</label>
                     <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthDate">Ngày sinh:</label>
+                    <input type="date" id="birthDate" name="birthDate">
+                </div>
+                <div class="form-group">
+                    <label for="departmentId">Khoa:</label>
+                    <select id="departmentId" name="departmentId" required>
+                        <option value="">Chọn khoa</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="qualificationId">Bằng cấp:</label>
+                    <select id="qualificationId" name="qualificationId">
+                        <option value="">Chọn bằng cấp</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>

@@ -158,3 +158,82 @@
 .btn-delete:hover {
     background: #c82333;
 }
+
+
+/* Report styles */
+
+.report-form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.report-form .form-group {
+    margin-bottom: 15px;
+}
+
+.report-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.report-form select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.report-result {
+    margin-top: 20px;
+}
+
+.report-result h4 {
+    color: #495057;
+    margin-bottom: 10px;
+}
+
+.report-result h5 {
+    color: #6c757d;
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+.report-details table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.report-details th,
+.report-details td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.report-details th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+}
+
+.report-details .total-row {
+    background-color: #e9ecef;
+    font-weight: bold;
+}
+
+.department-report,
+.school-report {
+    max-width: 100%;
+}
+
+.department-report h3,
+.school-report h3 {
+    color: #495057;
+    margin-bottom: 20px;
+}

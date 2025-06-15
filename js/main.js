@@ -5,6 +5,7 @@ import { ClassManager } from './modules/classes.js';
 import { TeacherManager } from './modules/teachers.js';
 import { StatisticsManager } from './modules/statistics.js';
 import { TeachingSalaryManager } from './modules/teachingSalary.js';
+import { initializeQualifications } from './modules/qualifications.js';
 
 // Import utilities
 // import { initStorage } from './utils/storage.js';
@@ -47,13 +48,14 @@ class Dashboard {
             TEACHERS: 'teachers',
             RATE_PER_LESSON: 'ratePerLesson',
             TEACHER_COEFFICIENTS: 'teacherCoefficients',
-            CLASS_COEFFICIENTS: 'classCoefficients'
+            CLASS_COEFFICIENTS: 'classCoefficients',
+            QUALIFICATIONS: 'qualifications'
         };
 
         Object.values(STORAGE_KEYS).forEach(key => {
             if (!localStorage.getItem(key)) {
                 // Initialize arrays for collection types
-                if (['courseModules', 'semesters', 'classes', 'teachers', 'teacherCoefficients', 'classCoefficients'].includes(key)) {
+                if (['courseModules', 'semesters', 'classes', 'teachers', 'teacherCoefficients', 'classCoefficients', 'qualifications'].includes(key)) {
                     localStorage.setItem(key, JSON.stringify([]));
                 }
                 // Initialize rate per lesson with 0
@@ -62,6 +64,9 @@ class Dashboard {
                 }
             }
         });
+
+        // Initialize default qualifications
+        initializeQualifications();
     }
 
     initNavigation() {

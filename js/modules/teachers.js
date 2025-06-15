@@ -1,3 +1,6 @@
+import { DepartmentManager } from './departments.js';
+import { QualificationManager } from './qualifications.js';
+
 export class TeacherManager {
     constructor() {
         this.contentArea = null;
@@ -5,6 +8,8 @@ export class TeacherManager {
         this.form = null;
         this.assignmentModal = null;
         this.assignmentForm = null;
+        this.departmentManager = new DepartmentManager();
+        this.qualificationManager = new QualificationManager();
     }
 
     init(contentArea) {
@@ -13,6 +18,8 @@ export class TeacherManager {
         this.form = document.getElementById('teacherForm');
         this.assignmentModal = document.getElementById('assignmentModal');
         this.assignmentForm = document.getElementById('assignmentForm');
+        this.departmentManager.init();
+        this.qualificationManager.init();
 
         this.setupContent();
         this.loadContent();
@@ -32,6 +39,9 @@ export class TeacherManager {
                         <tr>
                             <th>Mã giảng viên</th>
                             <th>Họ và tên</th>
+                            <th>Ngày sinh</th>
+                            <th>Khoa</th>
+                            <th>Bằng cấp</th>
                             <th>Email</th>
                             <th>Số điện thoại</th>
                             <th>Các lớp đã phân công</th>
@@ -51,10 +61,15 @@ export class TeacherManager {
 
         teachers.forEach(teacher => {
             const assignedClasses = this.getAssignedClasses(teacher.id);
+            const department = this.departmentManager.getDepartmentById(teacher.departmentId);
+            const qualification = this.qualificationManager.getQualificationById(teacher.qualificationId);
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${teacher.code}</td>
                 <td>${teacher.name}</td>
+                <td>${teacher.birthDate ? new Date(teacher.birthDate).toLocaleDateString('vi-VN') : ''}</td>
+                <td>${department ? department.name : 'Chưa phân khoa'}</td>
+                <td>${qualification ? qualification.name : 'Chưa có'}</td>
                 <td>${teacher.email || ''}</td>
                 <td>${teacher.phone || ''}</td>
                 <td>${assignedClasses.length}</td>
@@ -83,6 +98,8 @@ export class TeacherManager {
         const title = document.getElementById('teacherModalTitle');
         title.textContent = 'Add Teacher';
         this.form.reset();
+        this.populateDepartmentSelect();
+        this.populateQualificationSelect();
         delete this.modal.dataset.editId;
         this.modal.style.display = 'block';
     }
@@ -97,6 +114,11 @@ export class TeacherManager {
 
             this.form.code.value = teacher.code;
             this.form.name.value = teacher.name;
+            this.form.birthDate.value = teacher.birthDate || '';
+            this.populateDepartmentSelect();
+            this.populateQualificationSelect();
+            this.form.departmentId.value = teacher.departmentId || '';
+            this.form.qualificationId.value = teacher.qualificationId || '';
             this.form.email.value = teacher.email || '';
             this.form.phone.value = teacher.phone || '';
 
@@ -185,6 +207,9 @@ export class TeacherManager {
         const formData = {
             code: this.form.code.value.trim(),
             name: this.form.name.value.trim(),
+            birthDate: this.form.birthDate.value,
+            departmentId: this.form.departmentId.value,
+            qualificationId: this.form.qualificationId.value,
             email: this.form.email.value.trim(),
             phone: this.form.phone.value.trim()
         };
@@ -293,5 +318,35 @@ export class TeacherManager {
 
     validatePhone(phone) {
         return /^\d{10,}$/.test(phone.replace(/[- ]/g, ''));
+    }
+
+    populateDepartmentSelect() {
+        const departments = this.departmentManager.getAllDepartments();
+        const departmentSelect = document.getElementById('departmentId');
+
+        // Clear existing options except the first one
+        departmentSelect.innerHTML = '<option value="">Chọn khoa</option>';
+
+        departments.forEach(dept => {
+            const option = document.createElement('option');
+            option.value = dept.id;
+            option.textContent = dept.name;
+            departmentSelect.appendChild(option);
+        });
+    }
+
+    populateQualificationSelect() {
+        const qualifications = this.qualificationManager.getAllQualifications();
+        const qualificationSelect = document.getElementById('qualificationId');
+
+        // Clear existing options except the first one
+        qualificationSelect.innerHTML = '<option value="">Chọn bằng cấp</option>';
+
+        qualifications.forEach(qual => {
+            const option = document.createElement('option');
+            option.value = qual.id;
+            option.textContent = qual.name;
+            qualificationSelect.appendChild(option);
+        });
     }
 }
